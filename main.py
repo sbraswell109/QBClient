@@ -9,7 +9,8 @@ import sys
 #     pyside2-uic form.ui -o ui_form.py
 from ui_form import Ui_Widget
 
-from widget.py import Widget
+from home_screen import HomeScreen
+from game_ui import GameUI
 
 #Might want to consider making this a QMainWindow instead of QSStackedWidget
 class Main(QtWidgets.QStackedWidget):
@@ -20,12 +21,29 @@ class Main(QtWidgets.QStackedWidget):
         self.ui.setupUi(self)
 
         #Create the different screens and add them to the stack
-        self.home = Widget(self)
-        self.addWidget(self.home)
+        self.child_widgets = dict() #Key:value is objectName:index in stack
+        self.add_to_stack(HomeScreen(self))    #Index 0
+        self.add_to_stack(GameUI(self))    #Index 1
 
 
 
 
+    #Helper function to make adding a little easier in case things need to change
+    #TODO: This is going to need to add the widget to an index dictionary so other widgets have a name to refer to eachother by
+    def add_to_stack(self, widget):
+        self.child_widgets[widget.objectName()] = self.addWidget(widget)
+
+
+    #Changes the current widget referred to by name
+    def change_screen(self, name):
+        widget_index = self.child_widgets[name]
+        self.setCurrentWidget(self.widget(widget_index))
+        self.setCurrentIndex(widget_index)
+
+
+
+
+#THIS ISN'T RUNNING FOR SOME REASON.  HOME_SCREEN.PY IS BEING RUN AS MAIN INSTEAD
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     widget = Main()

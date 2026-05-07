@@ -12,11 +12,15 @@ from ui_form import Ui_Widget
 
 #I think that this widget will be the main window, and the other screens of the game are all separate widgets that the main window will display as needed
 #   I just don't quite know how the sub widgets will be able to "end" themselves to return to the main screen
-class Widget(QtWidgets.QWidget):
+class HomeScreen(QtWidgets.QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.ui = Ui_Widget()   #IDK What this does, look into it
         self.ui.setupUi(self)
+
+        self.parent = parent
+        self.setObjectName("Home")
+
 
         #Layout settings
         self.layout = QtWidgets.QGridLayout(self)
@@ -25,38 +29,43 @@ class Widget(QtWidgets.QWidget):
         self.title = QtWidgets.QLabel("Queen's Blood Online")
         self.layout.addWidget(self.title, 0, 1, alignment=QtCore.Qt.AlignHCenter)
 
-        #TODO: FIGURE OUT WHAT TO DO HERE
-        #Connection Info section
-        self.connection_info = QtWidgets.QLabel("Connection info here")
-        self.layout.addWidget(self.connection_info, 1, 0, alignment=QtCore.Qt.AlignCenter)
+        self.connection_info()
+        self.deck_display()
+        self.create_deck_editor_button()
+        self.create_play_button()
 
-        #TODO: FIGURE OUT WHAT TO DO HERE
-        #Selected Deck Display
-        self.selected_deck_info = QtWidgets.QLabel("Selected Deck Info here")
-        self.layout.addWidget(self.selected_deck_info, 1, 2, alignment=QtCore.Qt.AlignCenter)
-
-        #Create buttons to go to various screens
-        #Deck Editor Button
+    def create_deck_editor_button(self):
         self.to_deck_editor = QtWidgets.QPushButton("Deck Editor", self)
         self.to_deck_editor.clicked.connect(self.to_deck_screen)
         self.layout.addWidget(self.to_deck_editor, 2, 1, alignment=QtCore.Qt.AlignCenter)
 
-        #Play Button
+    def create_play_button(self):
         self.to_play = QtWidgets.QPushButton("Play", self)
         self.to_play.clicked.connect(self.to_play_screen)
         self.layout.addWidget(self.to_play, 1, 1, alignment = QtCore.Qt.AlignCenter)
 
-    #TODO: Actually go to the deck editor
+    #TODO: Deal with connection information
+    def connection_info(self):
+        self.connection_info = QtWidgets.QLabel("Connection info here")
+        self.layout.addWidget(self.connection_info, 1, 0, alignment=QtCore.Qt.AlignCenter)
+
+    #TODO: Display the currently selected deck
+    def deck_display(self):
+        self.selected_deck_info = QtWidgets.QLabel("Selected Deck Info here")
+        self.layout.addWidget(self.selected_deck_info, 1, 2, alignment=QtCore.Qt.AlignCenter)
+
+    #TODO: Actually go to the deck editor.  The deck editor widget needs to be created
     def to_deck_screen(self):
         print("Work in Progress")
 
-    #TODO: Actually go to play screen
+    #TODO: This is also probably where the game should start, but it feels kinda weird to have the home_screen UI start the game.  Main or GameUI should probably start running the game engine
     def to_play_screen(self):
-        print("Work in Progress")
+        self.parent.change_screen("Game")
+
 
 #Ideally this is obsolete and main.py should be run instead
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
-    widget = Widget()
+    widget = HomeScreen()
     widget.show()
     sys.exit(app.exec())
