@@ -29,8 +29,7 @@ class Main(QtWidgets.QStackedWidget):
 
 
     #Helper function to make adding a little easier in case things need to change
-    #TODO: This is going to need to add the widget to an index dictionary so other widgets have a name to refer to eachother by
-    def add_to_stack(self, widget):
+    def add_to_stack(self, widget: str):
         self.child_widgets[widget.objectName()] = self.addWidget(widget)
 
 
