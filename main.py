@@ -14,7 +14,6 @@ from game_ui import GameUI
 
 #Might want to consider making this a QMainWindow instead of QSStackedWidget
 class Main(QtWidgets.QStackedWidget):
-    #TODO: All of this
     def __init__(self, parent=None):
         super().__init__(parent)
         self.ui = Ui_Widget()   #IDK What this does, look into it
@@ -22,8 +21,8 @@ class Main(QtWidgets.QStackedWidget):
 
         #Create the different screens and add them to the stack
         self.child_widgets = dict() #Key:value is objectName:index in stack
-        self.add_to_stack(HomeScreen(self))    #Index 0
-        self.add_to_stack(GameUI(self))    #Index 1
+        self.add_to_stack(HomeScreen(self))
+        self.add_to_stack(GameUI(self))
 
 
 
@@ -42,7 +41,6 @@ class Main(QtWidgets.QStackedWidget):
 
 
 
-#THIS ISN'T RUNNING FOR SOME REASON.  HOME_SCREEN.PY IS BEING RUN AS MAIN INSTEAD
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     widget = Main()

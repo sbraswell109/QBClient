@@ -10,8 +10,6 @@ from PySide6 import QtWidgets, QtCore
 #     pyside2-uic form.ui -o ui_form.py
 from ui_form import Ui_Widget
 
-#I think that this widget will be the main window, and the other screens of the game are all separate widgets that the main window will display as needed
-#   I just don't quite know how the sub widgets will be able to "end" themselves to return to the main screen
 class HomeScreen(QtWidgets.QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -25,7 +23,7 @@ class HomeScreen(QtWidgets.QWidget):
         #Layout settings
         self.layout = QtWidgets.QGridLayout(self)
 
-        #Title
+        #Populating the home screen
         self.title = QtWidgets.QLabel("Queen's Blood Online")
         self.layout.addWidget(self.title, 0, 1, alignment=QtCore.Qt.AlignHCenter)
 
@@ -34,6 +32,7 @@ class HomeScreen(QtWidgets.QWidget):
         self.create_deck_editor_button()
         self.create_play_button()
 
+    #Helpers to create various buttons
     def create_deck_editor_button(self):
         self.to_deck_editor = QtWidgets.QPushButton("Deck Editor", self)
         self.to_deck_editor.clicked.connect(self.to_deck_screen)

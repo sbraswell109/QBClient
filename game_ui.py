@@ -8,7 +8,7 @@ from PySide6 import QtWidgets
 #     pyside2-uic form.ui -o ui_form.py
 from ui_form import Ui_Widget
 
-
+#This file controlls what the player sees, as well as input from the player from buttons and such
 class GameUI(QtWidgets.QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
