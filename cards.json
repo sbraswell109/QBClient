@@ -1,0 +1,4 @@
+{
+  "001": {"name": "Security Officer", "cost": 1, "value": 1, "territory": [[-1, 0],[1,0],[0,-1],[0,1]], "effect": 0, "effect_territory": []},
+  "002": {"name": "Riot Trooper", "cost": 2, "value": 3, "territory": [[0,2],[0,1],[1,0],[0,-1],[0,-2]], "effect": 0, "effect_territory": []}
+}
