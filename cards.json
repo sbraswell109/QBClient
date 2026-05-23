@@ -1,4 +1,7 @@
 {
   "001": {"name": "Security Officer", "cost": 1, "value": 1, "territory": [[-1, 0],[1,0],[0,-1],[0,1]], "effect": 0, "effect_territory": []},
-  "002": {"name": "Riot Trooper", "cost": 2, "value": 3, "territory": [[0,2],[0,1],[1,0],[0,-1],[0,-2]], "effect": 0, "effect_territory": []}
+  "002": {"name": "Riot Trooper", "cost": 2, "value": 3, "territory": [[0,2],[0,1],[1,0],[0,-1],[0,-2]], "effect": 0, "effect_territory": []},
+  "003": {"name": "Grenadier", "cost": 2, "value": 1, "territory": [], "effect": 3, "effect_territory": [[2,0]]},
+  "004": {"name": "J-Unit Sweeper", "cost": 2, "value": 2, "territory": [[0,1],[1,1],[0,-1],[1,-1]], "effect": 0, "effect_territory": []},
+  "005": {"name": "Queen Bee", "cost": 1, "value": 1, "territory": [[0,2],[0,-2]], "effect": 0, "effect_territory": []}
 }
