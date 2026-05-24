@@ -2,4 +2,4 @@
 name = "PySide Widgets Project"
 
 [tool.pyside6-project]
-files = ["board.py", "card.py", "form.ui", "game.py", "game_ui.py", "home_screen.py", "main.py"]
+files = ["board.py", "card.py", "card_effects.py", "cards.json", "form.ui", "game.py", "game_ui.py", "home_screen.py", "json_handler.py", "main.py"]
