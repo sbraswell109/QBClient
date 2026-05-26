@@ -17,5 +17,6 @@ class GameUI(QtWidgets.QWidget):
 
         self.parent = parent
         self.setObjectName("Game")
+        #TODO: Create the game's UI
 
 

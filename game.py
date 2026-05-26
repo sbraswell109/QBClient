@@ -10,6 +10,7 @@ def run_game(game_ui: GameUI):
     #Create the Board
     #Draw cards from Deck
     #Game loop starts
+    #   Just start with being able to place cards on the board for the player first.  Worry about adding in a second player and networking later
     pass
 
 if __name__ == "__main__":

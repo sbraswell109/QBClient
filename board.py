@@ -4,6 +4,9 @@
 
 from card import Card
 
+#TODO: think about this
+#   This class was intended to be the board, but the functions are so closely tied to the board as well as the steps of the general game loop since everything happens when a card is place
+#       Maybe this class should be renamed to Game Manager or something?
 class GameBoard():
     def __init__(self):
         #Board is represented like this so I can write [x,y] coordinates and have the board behave properly with them
@@ -19,11 +22,14 @@ class GameBoard():
         #[Node(1), Node(0), Node(0), Node(0), Node(-1)],
         #[Node(1), Node(0), Node(0), Node(0), Node(-1)]]   #3 rows 5 columns
 
-        #pos is an x,y coordinate of where to place the given card in the board
-        #TODO: At some point, this is going to need to take the opposing player into account too for when they add cards to the board (flipped territory, pawn_val adjustments, etc)
+
+    #pos is an x,y coordinate of where to place the given card in the board
+    #BIG TODO: At some point, this is going to need to take the opposing player into account too for when they add cards to the board (flipped territory, pawn_val adjustments, etc)
     def add_card(self, pos, card):
         #Put card in the correct node
         self.board[pos[0]][pos[1]].card = card
+        #Some cards add extra pawns to territory (EX: Titan), so may want to consider making this it's own function for ease of use,
+        #   but also need to double check rules regarding those and opponent's territory
         #Capture Territory of correct area
         for square in card.territory:
             #Need to check all the territory within the bounds of the board (0-2y , 0-4x) and then adjust pawn_value accordingly
@@ -37,6 +43,7 @@ class GameBoard():
                             target.pawn_value *= -1
                         else:
                             target.pawn_value += 1    #Spot empty or controlled by player
+        #BIG TODO: Finalize card effect function signatures before writing any code actually calling the cards
         #TODO: Card's effect should occur before territory is captured since if the effect destroys a card and takes the space, the space will be taken which requires the effec to occur first
         #Apply the card's effect (How do Instant and Continuous effects differ in how they are applied? When a continuous card leaves the field, it's effect needs to be unapplied)
         #   Idea: Instanteous effects modify the card object, continuous effects modify the affected nodes' point_modifiers,
@@ -65,6 +72,7 @@ class Node():
         #card will be a card object, which has yet to be implemented, or can be None.  I can also make a "None" card if necessary
         self.card = card
         #Point modifiers is the sum of all continuous number modifications for that slot, because these will need to be applied even if the slot is empty
+        #TODO: Figure out exactly what point_modifiers consists of.  If a card modifying another card is destroyed, how do we stop keeping track of their modifier?  Pointers?
         self.point_modifiers = []
 
 #TODO: Write tests in a dedicated board test file

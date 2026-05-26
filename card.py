@@ -1,8 +1,10 @@
 # This Python file uses the following encoding: utf-8
 
 
-#Use a JSON file to store the original copies of all cards, and then load them dynamically based on what cards are used.  Ask Christos he knows about them
+#Use a JSON file to store the original copies of all cards, and then load them dynamically based on what cards are used.
 #JSON files won't store python code, so there will have to be a separate dictionary of ID:effect functions while the JSON stores the effect ID to match it when the object is created
+#Adding a new card to the game should be as easy as putting it's information in the JSON file, and then creating it's effect in card_effects.
+#   The board should understand when those effects trigger
 class Card():
     #While effect and effect_territory can be None, they are still in the JSON file so they probably won't be None.  May remove default argument
     def __init__(self, id, name, cost, value, territory, effect=None):

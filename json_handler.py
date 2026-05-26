@@ -14,13 +14,13 @@ def read_cards(card_array):
     return selected_data
 
 
-# This function is responsible for actually creating card data objects (for testing, of course)
+# This function is responsible for actually creating card data objects
 # Given a card's id and a dictionary with the rest of its data (from the JSON file), generates the corresponding card object
 def create_card(id, data):
     effect = Effect(card_effects[data["effect"]]["function"], card_effects[data["effect"]]["type"], data["effect_territory"])
     return Card(id, data["name"], data["cost"], data["value"], data["territory"], effect)
 
-#Function that takes an array of card ids and returns an array of the corresponding card objects
+#Function that takes an array of card ids and returns an array of the corresponding card objects.  This is the main function used to create cards from the JSON
 def generate_cards(card_array):
     card_data = read_cards(card_array)
     #Dictionaries can't have duplicate keys, so we need to account for that
