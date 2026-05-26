@@ -23,7 +23,8 @@ def create_card(id, data):
 #Function that takes an array of card ids and returns an array of the corresponding card objects
 def generate_cards(card_array):
     card_data = read_cards(card_array)
-    return [create_card(id, data) for id,data in card_data.items()]
+    #Dictionaries can't have duplicate keys, so we need to account for that
+    return [create_card(id, card_data[id]) for id in card_array]
 
 if __name__ == '__main__':
     grenadier, mandragora = generate_cards(['003', '010'])

@@ -21,17 +21,22 @@ class GameBoard():
 
         #pos is an x,y coordinate of where to place the given card in the board
         #TODO: At some point, this is going to need to take the opposing player into account too for when they add cards to the board (flipped territory, pawn_val adjustments, etc)
-        def add_card(self, pos, card):
-            #Put card in the correct node
-            self.board[pos[0]][pos[1]].card = card
-            #Capture Territory of correct area
-            for square in card.territory:
-                #Need to check all the territory within the bounds of the board (0-2y , 0-4x) and then adjust pawn_value accordingly
-                spot = [pos[0]+square[0], pos[1]+square[1]] #[x,y] which is used to go directly on the board
-                if spot[0] >= 0 and spot[0] <= 4 and spot[1] >= 0 and spot[1] <= 2:
-                    #TODO: This should only adjust the pawn values of squares that don't already have a card on them
-                    if self.board[spot[0]][spot[1]].pawn_val < 3:
-                        self.board[spot[0]][spot[1]].pawn_val += 1
+    def add_card(self, pos, card):
+        #Put card in the correct node
+        self.board[pos[0]][pos[1]].card = card
+        #Capture Territory of correct area
+        for square in card.territory:
+            #Need to check all the territory within the bounds of the board (0-2y , 0-4x) and then adjust pawn_value accordingly
+            target_x, target_y = [pos[0]+square[0], pos[1]+square[1]] #[x,y] which is used to go directly on the board
+            if target_x >= 0 and target_x <= 4 and target_y >= 0 and target_y <= 2: #Check the bounds of the board
+                target = self.board[target_x][target_y]
+                if target.card == None:
+                    if target.pawn_value < 3: #Check the pawn_value
+                        #TODO: Double check rules that if spot is controlled by opp, taking control only flips instead of flipping and adding
+                        if target.pawn_value < 0: #Spot controlled by opp
+                            target.pawn_value *= -1
+                        else:
+                            target.pawn_value += 1    #Spot empty or controlled by player
         #TODO: Card's effect should occur before territory is captured since if the effect destroys a card and takes the space, the space will be taken which requires the effec to occur first
         #Apply the card's effect (How do Instant and Continuous effects differ in how they are applied? When a continuous card leaves the field, it's effect needs to be unapplied)
         #   Idea: Instanteous effects modify the card object, continuous effects modify the affected nodes' point_modifiers,
@@ -44,6 +49,13 @@ class GameBoard():
         pass
 
     #TODO: Write a string representation to easily print for testing purposes
+    def __str__(self):
+        str = ''
+        for y in range(len(self.board[0])):
+            for x in range(len(self.board)):
+                str += f"({self.board[x][y].pawn_value},{self.board[x][y].card.name if self.board[x][y].card != None else 'None'})\t"
+            str += "\n"
+        return str
 
 
 class Node():
@@ -57,7 +69,4 @@ class Node():
 
 #TODO: Write tests in a dedicated board test file
 if __name__ == "__main__":
-    board = GameBoard()
-    crab = CREATE_CRAB
-    board.add_card((1, 2), crab)
-    print(board)
+    pass
