@@ -3,6 +3,7 @@
 #This file contains the board class used to represent and modify the game board
 
 from card import Card
+from utilities import TurnPlayer
 
 #TODO: think about this
 #   This class was intended to be the board, but the functions are so closely tied to the board as well as the steps of the general game loop since everything happens when a card is place
@@ -24,8 +25,9 @@ class GameBoard():
 
 
     #pos is an x,y coordinate of where to place the given card in the board
+    #If the opponent is placing a card, we can assume the territory and effect territory is already flipped, since we can do that when we generate their decklist of card objects
     #BIG TODO: At some point, this is going to need to take the opposing player into account too for when they add cards to the board (flipped territory, pawn_val adjustments, etc)
-    def add_card(self, pos, card):
+    def add_card(self, pos, card, turnplayer):
         #Put card in the correct node
         self.board[pos[0]][pos[1]].card = card
         #Some cards add extra pawns to territory (EX: Titan), so may want to consider making this it's own function for ease of use,
@@ -37,12 +39,14 @@ class GameBoard():
             if target_x >= 0 and target_x <= 4 and target_y >= 0 and target_y <= 2: #Check the bounds of the board
                 target = self.board[target_x][target_y]
                 if target.card == None:
-                    if target.pawn_value < 3: #Check the pawn_value
+                    if (target.pawn_value < 3 and turnplayer == TurnPlayer.SELF) or (target.pawn_value > -3 and turnplayer == TurnPlayer.OPPONENT): #Check the pawn_value
                         #TODO: Double check rules that if spot is controlled by opp, taking control only flips instead of flipping and adding
-                        if target.pawn_value < 0: #Spot controlled by opp
+                        if (target.pawn_value < 0 and turnplayer == TurnPlayer.SELF) or (target.pawn_value > 0 and turnplayer == TurnPlayer.OPPONENT): #Spot needs to be flipped
                             target.pawn_value *= -1
-                        else:
-                            target.pawn_value += 1    #Spot empty or controlled by player
+                        elif turnplayer == TurnPlayer.SELF:     #Spot empty or controlled by self
+                            target.pawn_value += 1
+                        elif turnplayer == TurnPlayer.OPPONENT: #Spot empty or controlled by opponent
+                            target.pawn_value -= 1
         #BIG TODO: Finalize card effect function signatures before writing any code actually calling the cards
         #TODO: Card's effect should occur before territory is captured since if the effect destroys a card and takes the space, the space will be taken which requires the effec to occur first
         #Apply the card's effect (How do Instant and Continuous effects differ in how they are applied? When a continuous card leaves the field, it's effect needs to be unapplied)

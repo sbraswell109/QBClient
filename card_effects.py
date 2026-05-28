@@ -1,12 +1,6 @@
 # This Python file uses the following encoding: utf-8
 
-from enum import Enum
-
-#EffectType is used to determine when the effect triggers.
-class EffectType(Enum):
-    INSTANT = 1
-    CONTINUOUS = 2
-    TRIGGER = 3
+from utilities import EffectType
 
 class Effect():
     def __init__(self, function, type, territory):
