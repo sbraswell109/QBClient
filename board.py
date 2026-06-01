@@ -59,7 +59,6 @@ class GameBoard():
     def update_board(self):
         pass
 
-    #TODO: Write a string representation to easily print for testing purposes
     def __str__(self):
         str = ''
         for y in range(len(self.board[0])):
@@ -67,6 +66,17 @@ class GameBoard():
                 str += f"({self.board[x][y].pawn_value},{self.board[x][y].card.name if self.board[x][y].card != None else 'None'})\t"
             str += "\n"
         return str
+
+    def __eq__(self, other_board):
+        if other_board == None:
+            return False
+        bool = True
+        for x in range(len(self.board)):
+            for y in range(len(self.board[0])):
+                if self.board[x][y] != other_board.board[x][y]:
+                    bool = False
+                    break
+        return bool
 
 
 class Node():
@@ -76,8 +86,15 @@ class Node():
         #card will be a card object, which has yet to be implemented, or can be None.  I can also make a "None" card if necessary
         self.card = card
         #Point modifiers is the sum of all continuous number modifications for that slot, because these will need to be applied even if the slot is empty
+        #   Maybe this should be a set instead of a list?
         #TODO: Figure out exactly what point_modifiers consists of.  If a card modifying another card is destroyed, how do we stop keeping track of their modifier?  Pointers?
+        #   Duh, cards have effect_territory which say which cards they are modifying.  I just need to figure out how to single out their own modifier in the list
         self.point_modifiers = []
+
+    def __eq__(self, other_node):
+        if other_node == None:
+            return False
+        return self.pawn_value == other_node.pawn_value and self.card == other_node.card and set(self.point_modifiers) == set(other_node.point_modifiers)
 
 #TODO: Write tests in a dedicated board test file
 if __name__ == "__main__":

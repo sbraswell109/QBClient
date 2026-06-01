@@ -11,6 +11,11 @@ class Effect():
     def __str__(self):
         return f"type: {self.type}, territory: {self.territory}, function: {self.function}"
 
+    def __eq__(self, other_effect):
+        if other_effect == None:
+            return False
+        return self.function == other_effect.function and self.territory == other_effect.territory
+
 #Card effect function needs board, position of card, and effect territory
 #BIG TODO: How do effects that add cards to hand work?
 def no_effect(board, pos, effect_territory):

@@ -22,6 +22,11 @@ class Card():
     def __str__(self):
         return f"card id: {self.id}, name: {self.name}, value: {self.value}, territory: {self.territory}\ncard's effect: {self.effect}"
 
+    def __eq__(self, other_card):
+        if other_card == None:
+            return False
+        return self.id == other_card.id and self.name == other_card.name and self.cost == other_card.cost and self.value == other_card.value and self.territory == other_card.territory and self.effect == other_card.effect
+
 
 if __name__ == "__main__":
     pass
