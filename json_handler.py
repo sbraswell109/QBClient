@@ -5,14 +5,13 @@ from card import Card
 from card_effects import Effect
 from card_effects import card_effects
 
-# Reads json file, selecting specific card information we want based on card_array
+# Reads json file, selecting specific card information we want given an array of IDs
 def read_cards(card_array):
     with open("cards.json", "r") as file:
         data = json.load(file)
         selected_data = {key: data[key] for key in card_array}
     # With this implementation, selected_data will be a Dict that looks EXACTLY like the json file ("id#":{rest of data}
     return selected_data
-
 
 # This function is responsible for actually creating card data objects
 # Given a card's id and a dictionary with the rest of its data (from the JSON file), generates the corresponding card object

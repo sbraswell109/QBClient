@@ -56,6 +56,7 @@ class GameBoard():
 
     #TODO: Write function
     #A function that checks the board for the proper board state, making sure cards that need to be destroyed are done so and trigger effects are applied if needed, etc
+    #NOTE: THERE ARE SPECIAL RULES FOR THE PAWN VALUE OF A SPACE WHEN A UNIT IS DESTROYED ON IT.  RESEARCH IT
     def update_board(self):
         pass
 

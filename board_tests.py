@@ -51,10 +51,13 @@ def pawn_value_flip_test():
     test_board.board[4][2].pawn_value = -2
     test_board.board[3][1].pawn_value = -1
     assert board == test_board
-    print(board)
+
+
+def run_board_tests():
+    basic_pawn_value_incrementations_test()
+    pawn_value_flip_test()
 
 if __name__ == "__main__":
     #Very basic adding cards to various spots on the board to test pawn_value incrementations
-    basic_pawn_value_incrementations_test()
-    pawn_value_flip_test()
+    run_board_tests()
     
