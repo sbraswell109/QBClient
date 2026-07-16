@@ -5,12 +5,15 @@
 
 
 from game_ui import GameUI
-from board import GameBoard
+from GameManager import GameManager
 
-
+#I was debating if I should incorporate run_game into GameManager, but I think having the game loop be its own separate function might be a good choice
+#   Because the main game loop will have to deal with networking, which allows GameManager to just be all of the game-related information
+#       TODO: Think about this
+#       Though does that mean GameManager should be renamed to something more appropriate if it's not managing the game loop?
 
 def run_game(game_ui: GameUI):
-    #Create the Board
+    #Create the GameManager
     #Draw cards from Deck
     #Game loop starts
     #   Just start with being able to place cards on the board for the player first.  Worry about adding in a second player and networking later

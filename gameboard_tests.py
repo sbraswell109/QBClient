@@ -1,5 +1,5 @@
 # This Python file uses the following encoding: utf-8
-from board import GameBoard
+from GameBoard import GameBoard
 from json_handler import generate_cards
 from utilities import TurnPlayer
 

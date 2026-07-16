@@ -2,7 +2,7 @@
 
 #This file contains the board class used to represent and modify the game board
 
-from card import Card
+from Card import Card
 from utilities import TurnPlayer
 
 #TODO: think about this
@@ -10,7 +10,10 @@ from utilities import TurnPlayer
 #       Maybe this class should be renamed to Game Manager or something?
 class GameBoard():
     def __init__(self):
+        #NOTE: tbh I don't really like this being called "board" because it means that I have to type stuff like board.board but I'm not sure of a better name
+        #   Though actually we shouldn't really be directly accessing GameBoard.board from GameManager so it should be fine
         #Board is represented like this so I can write [x,y] coordinates and have the board behave properly with them
+        #[0,0] is top left of board when facing it as a 3x5
         self.board = [
         [Node(1), Node(1), Node(1)],
         [Node(0), Node(0), Node(0)],
@@ -26,7 +29,6 @@ class GameBoard():
 
     #pos is an x,y coordinate of where to place the given card in the board
     #If the opponent is placing a card, we can assume the territory and effect territory is already flipped, since we can do that when we generate their decklist of card objects
-    #BIG TODO: At some point, this is going to need to take the opposing player into account too for when they add cards to the board (flipped territory, pawn_val adjustments, etc)
     def add_card(self, pos, card, turnplayer):
         #Put card in the correct node
         self.board[pos[0]][pos[1]].card = card
@@ -56,7 +58,7 @@ class GameBoard():
 
     #TODO: Write function
     #A function that checks the board for the proper board state, making sure cards that need to be destroyed are done so and trigger effects are applied if needed, etc
-    #NOTE: THERE ARE SPECIAL RULES FOR THE PAWN VALUE OF A SPACE WHEN A UNIT IS DESTROYED ON IT.  RESEARCH IT
+    #NOTE: When a card is destroyed, the pawn value of the square is equivalent to the pawn cost of the destroyed card (so I suppose pawn_val is capped at the card's cost when placed
     def update_board(self):
         pass
 
@@ -97,6 +99,5 @@ class Node():
             return False
         return self.pawn_value == other_node.pawn_value and self.card == other_node.card and set(self.point_modifiers) == set(other_node.point_modifiers)
 
-#TODO: Write tests in a dedicated board test file
 if __name__ == "__main__":
     pass

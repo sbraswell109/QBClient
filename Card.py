@@ -25,7 +25,9 @@ class Card():
     def __eq__(self, other_card):
         if other_card == None:
             return False
-        return self.id == other_card.id and self.name == other_card.name and self.cost == other_card.cost and self.value == other_card.value and self.territory == other_card.territory and self.effect == other_card.effect
+        territory_set = set([tuple(x) for x in self.territory])
+        other_terr_set = set([tuple(x) for x in other_card.territory])
+        return self.id == other_card.id and self.name == other_card.name and self.cost == other_card.cost and self.value == other_card.value and territory_set == other_terr_set and self.effect == other_card.effect
 
 
 if __name__ == "__main__":

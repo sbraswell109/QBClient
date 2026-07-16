@@ -12,6 +12,7 @@ from random import shuffle
 #       Unless the deck also had a function to pull a card out of the deck by ID, then we could have an opposing player's deck be constructed, but then where do we keep the card objects
 #           that are created and placed into the hand by card effects (EX: Moogle Trio)
 class Deck:
+    #A deck list is represented as a list of card IDs.  Remeber, it doesn't consist of card objects
     def __init__(self, deck_list):
         self.deck_list = deck_list
         #shuffle the deck
@@ -22,6 +23,7 @@ class Deck:
     def shuffle(self):
         shuffle(self.deck)
 
+    #TODO: How should this be handled when there are no cards left in deck?  We can't always assume that there are cards left, unless this does and the Game Manager handles the cases
     def draw(self):
         return self.deck.pop(0)
 
