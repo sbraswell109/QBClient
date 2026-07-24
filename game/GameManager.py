@@ -1,9 +1,9 @@
 # This Python file uses the following encoding: utf-8
 
-from Deck import Deck
-from GameBoard import GameBoard
-from json_handler import generate_cards
-from utilities import TurnPlayer
+from game.Deck import Deck
+from game.GameBoard import GameBoard
+from game.json_handler import generate_cards
+from game.utilities import TurnPlayer
 
 STARTING_HAND_SIZE = 5
 

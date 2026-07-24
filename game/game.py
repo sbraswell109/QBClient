@@ -4,8 +4,8 @@
 # When the game is started by hitting the "Play" button on the home screen, this file will take over after switching to the game_ui
 
 
-from game_ui import GameUI
-from GameManager import GameManager
+from ui.game_ui import GameUI
+from game.GameManager import GameManager
 
 #I was debating if I should incorporate run_game into GameManager, but I think having the game loop be its own separate function might be a good choice
 #   Because the main game loop will have to deal with networking, which allows GameManager to just be all of the game-related information

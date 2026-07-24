@@ -1,6 +1,6 @@
 # This Python file uses the following encoding: utf-8
 
-from utilities import EffectType
+from game.utilities import EffectType
 
 class Effect():
     def __init__(self, function, type, territory):
