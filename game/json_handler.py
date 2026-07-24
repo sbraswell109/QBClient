@@ -4,12 +4,12 @@ from pathlib import Path
 
 import json
 from game.Card import Card
-from game.card_effects import Effect, card_effects
+from game.card_effects import Effect
+from game.card_effects import card_effects
 
 # Reads json file, selecting specific card information we want given an array of IDs
 def _read_cards(card_array):
-    #IMPORTANT NOTE: Current working directory is different from where cards.json is
-    with open(Path("./game/cards.json"), "r") as file:
+    with open(Path('./game/cards.json'), "r") as file:
         data = json.load(file)
         selected_data = {key: data[key] for key in card_array}
     # With this implementation, selected_data will be a Dict that looks EXACTLY like the json file ("id#":{rest of data}

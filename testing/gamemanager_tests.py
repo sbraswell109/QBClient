@@ -1,10 +1,10 @@
 # This Python file uses the following encoding: utf-8
 
-from GameManager import GameManager, STARTING_HAND_SIZE
-from GameBoard import GameBoard
-from json_handler import generate_cards
-from utilities import TurnPlayer
-from Card import Card
+from game.GameManager import GameManager, STARTING_HAND_SIZE
+from game.GameBoard import GameBoard
+from game.json_handler import generate_cards
+from game.utilities import TurnPlayer
+from game.Card import Card
 
 #GM initialization setup
 def reverse_opp_territory_tests():
