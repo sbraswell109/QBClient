@@ -1,7 +1,7 @@
 # This Python file uses the following encoding: utf-8
-from GameBoard import GameBoard
-from json_handler import generate_cards
-from utilities import TurnPlayer
+from game.GameBoard import GameBoard
+from game.json_handler import generate_cards
+from game.utilities import TurnPlayer
 
 def basic_pawn_value_incrementations_test():
     board = GameBoard()

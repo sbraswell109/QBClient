@@ -9,8 +9,8 @@ import sys
 #     pyside2-uic form.ui -o ui_form.py
 from ui_form import Ui_Widget
 
-from home_screen import HomeScreen
-from game_ui import GameUI
+from ui.home_screen import HomeScreen
+from ui.game_ui import GameUI
 
 #Might want to consider making this a QMainWindow instead of QSStackedWidget
 class Main(QtWidgets.QStackedWidget):
