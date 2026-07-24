@@ -2,8 +2,8 @@
 
 #This file contains the board class used to represent and modify the game board
 
-from Card import Card
-from utilities import TurnPlayer
+from game.Card import Card
+from game.utilities import TurnPlayer
 
 #TODO: think about this
 #   This class was intended to be the board, but the functions are so closely tied to the board as well as the steps of the general game loop since everything happens when a card is place
