@@ -16,9 +16,11 @@ class GameManager:
         self.player_deck = Deck(player_deck_list)
         self.player_hand = []
         self.opp_hand_size = STARTING_HAND_SIZE
+        #TODO: Figure this out
         #NOTE: The input for these 2 might need to be changed once it's been decided how cards that add cards to hand work
         self.player_cards = generate_cards(player_deck_list)
         self.opp_cards = generate_cards(opp_deck_list)
+        #By reversing the territories of the opponent's cards here, we can really easily just give the board an already modified card object so no special player/opponent logic is needed for territory locations
         self._reverse_territories(self.opp_cards)
 
     #Draw the opening 5 cards and mulligan if needed
@@ -46,8 +48,7 @@ class GameManager:
         #Have the board place the object
         self.board.add_card(pos, card, turnplayer)
 
-    #Returns the index of a specific card given a list of card objects
-    #Returns -1 if not found, but python does permit negative indicies so I'm not sure if there's a good replacement other than maybe throwing an error?
+    #Returns the index of a specific card given a list of card objects.
     def _find_index_by_card_id(self, cards, card_id):
         for i in range(len(cards)):
             if cards[i].id == card_id:

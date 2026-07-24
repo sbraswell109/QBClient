@@ -85,7 +85,6 @@ def place_player_card():
     assert gm.board.board == test_board.board
     assert set(gm.player_hand) == set(['002', '003', '004', '005'])
 
-#Before this can be written, how territory is handled when it is the opponent's card needs to be figured out in GameManager and GameBoard
 def place_opp_card():
     player_deck = ['001', '001', '001', '001', '001']
     opp_deck = ['001', '002', '003', '004', '005']
