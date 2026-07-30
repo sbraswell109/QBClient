@@ -9,7 +9,7 @@ from game.utilities import TurnPlayer
 #   This class was intended to be the board, but the functions are so closely tied to the board as well as the steps of the general game loop since everything happens when a card is place
 #       Maybe this class should be renamed to Game Manager or something?
 class GameBoard():
-    def __init__(self):
+    def __init__(self, parent=None):
         #NOTE: tbh I don't really like this being called "board" because it means that I have to type stuff like board.board but I'm not sure of a better name
         #   Though actually we shouldn't really be directly accessing GameBoard.board from GameManager so it should be fine
         #Board is represented like this so I can write [x,y] coordinates and have the board behave properly with them
@@ -25,16 +25,22 @@ class GameBoard():
         #[Node(1), Node(0), Node(0), Node(0), Node(-1)],
         #[Node(1), Node(0), Node(0), Node(0), Node(-1)],
         #[Node(1), Node(0), Node(0), Node(0), Node(-1)]]   #3 rows 5 columns
+        self.parent = parent
 
 
     #pos is an x,y coordinate of where to place the given card in the board
     #If the opponent is placing a card, we can assume the territory and effect territory is already flipped, since we can do that when we generate their decklist of card objects
     def add_card(self, pos, card, turnplayer):
+        #TODO: The effect function needs to be given everything it needs to do its job
+        card.effect.function(self._generate_context(pos, card))
+        self.update_board() #To trigger destruction of any cards necessary and to handle the results of any trigger/continuous effects
+
         #Put card in the correct node
         self.board[pos[0]][pos[1]].card = card
         #Some cards add extra pawns to territory (EX: Titan), so may want to consider making this it's own function for ease of use,
         #   but also need to double check rules regarding those and opponent's territory
         #Capture Territory of correct area
+        #TODO: Update this to use get_nodes_in_range()
         for square in card.territory:
             #Need to check all the territory within the bounds of the board (0-2y , 0-4x) and then adjust pawn_value accordingly
             target_x, target_y = [pos[0]+square[0], pos[1]+square[1]] #[x,y] which is used to go directly on the board
@@ -58,9 +64,24 @@ class GameBoard():
 
     #TODO: Write function
     #A function that checks the board for the proper board state, making sure cards that need to be destroyed are done so and trigger effects are applied if needed, etc
+    # This also adds up continuous modifiers on a card for these checks
     #NOTE: When a card is destroyed, the pawn value of the square is equivalent to the pawn cost of the destroyed card (so I suppose pawn_val is capped at the card's cost when placed
     def update_board(self):
         pass
+
+    #Given an origin position on the board and a list of territories to check, return the node coordinates (origin + territory) coordinates that are within the bounds of the board
+    def get_nodes_in_range(self, origin: tuple[int, int], territory: list[list[int, int]]) -> tuple[tuple[int, int]]:
+        in_bounds = []
+        x_len = len(self.board)
+        y_len = len(self.board[0])
+        for offset in territory:
+            target = [origin[0] + offset[0], origin[1] + offset[1]]
+            if target[0] > -1 and target[0] < x_len and target[1] > -1 and target[1] < y_len:
+                in_bounds.append(tuple(target))
+        return tuple(in_bounds)
+
+    def _generate_context(self, pos: tuple[int, int], central_card: Card) -> dict:
+        return dict(gm=self.parent, position=pos, card=central_card)
 
     def __str__(self):
         str = ''
@@ -81,6 +102,9 @@ class GameBoard():
                     break
         return bool
 
+    def __getitem__(self, item):
+        return self.board[item]
+
 
 class Node():
     def __init__(self, pawn_val, card=None):
@@ -93,6 +117,12 @@ class Node():
         #TODO: Figure out exactly what point_modifiers consists of.  If a card modifying another card is destroyed, how do we stop keeping track of their modifier?  Pointers?
         #   Duh, cards have effect_territory which say which cards they are modifying.  I just need to figure out how to single out their own modifier in the list
         self.point_modifiers = []
+
+    # Given another node, returns if that node is controlled by a different player than the current node.  Returns False if either node's pawn_value is 0
+    def is_enemy_of(self, other_node) -> bool:
+        if self.pawn_value < 0 and other_node.pawn_value > 0 or self.pawn_value > 0 and other_node.pawn_value < 0:
+            return True
+        return False
 
     def __eq__(self, other_node):
         if other_node == None:

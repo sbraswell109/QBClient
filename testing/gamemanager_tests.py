@@ -4,7 +4,8 @@ from game.GameManager import GameManager, STARTING_HAND_SIZE
 from game.GameBoard import GameBoard
 from game.json_handler import generate_cards
 from game.utilities import TurnPlayer
-from game.Card import Card
+from game.Card import Card, Effect
+from game.card_effects import card_effects
 
 #GM initialization setup
 def reverse_opp_territory_tests():
@@ -89,14 +90,13 @@ def place_opp_card():
     player_deck = ['001', '001', '001', '001', '001']
     opp_deck = ['001', '002', '003', '004', '005']
     gm = GameManager(player_deck, opp_deck)
-    gm.opp_cards[gm._find_index_by_card_id(gm.opp_cards, '004')].effect = None  #Need to manually set this effect to None or the custom card we're using as a reference won't be equivalent to this
     assert gm.opp_hand_size == STARTING_HAND_SIZE
     gm.place_card((4,0),'001',TurnPlayer.OPPONENT)
     assert gm.opp_hand_size == STARTING_HAND_SIZE - 1
     gm.place_card((4,1),'004',TurnPlayer.OPPONENT)
     assert gm.opp_hand_size == STARTING_HAND_SIZE - 2
 
-    reversed_sweeper = Card('004', 'J-Unit Sweeper', 2, 2, [[0,1],[-1,1],[0,-1],[-1,-1]])
+    reversed_sweeper = Card('004', 'J-Unit Sweeper', 2, 2, [[0,1],[-1,1],[0,-1],[-1,-1]], Effect(card_effects[0]["function"], card_effects[0]["type"], []))
     sec_off = generate_cards(['001'])[0]
     test_board = GameBoard()
     test_board.add_card((4,0), sec_off, TurnPlayer.OPPONENT)

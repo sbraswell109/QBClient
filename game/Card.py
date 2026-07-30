@@ -30,5 +30,20 @@ class Card():
         return self.id == other_card.id and self.name == other_card.name and self.cost == other_card.cost and self.value == other_card.value and territory_set == other_terr_set and self.effect == other_card.effect
 
 
+class Effect():
+    def __init__(self, function, type, territory):
+        self.function = function    #Actual function that gets called
+        self.type = type    #Type of effect, (Instant, Continuous, Trigger)
+        self.territory = territory  #The territory the effect acts on
+
+    def __str__(self):
+        return f"type: {self.type}, territory: {self.territory}, function: {self.function}"
+
+    def __eq__(self, other_effect):
+        if other_effect == None:
+            return False
+        return self.function == other_effect.function and self.territory == other_effect.territory
+
+
 if __name__ == "__main__":
     pass

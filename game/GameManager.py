@@ -2,8 +2,8 @@
 
 from game.Deck import Deck
 from game.GameBoard import GameBoard
-from game.json_handler import generate_cards
 from game.utilities import TurnPlayer
+import game.json_handler
 
 STARTING_HAND_SIZE = 5
 
@@ -11,15 +11,15 @@ STARTING_HAND_SIZE = 5
 class GameManager:
     #Only the decklists are required outside information.  Everything else can be constructed on its own
     def __init__(self, player_deck_list, opp_deck_list):
-        self.board = GameBoard()
+        self.board = GameBoard(self)
         #Important to remember that player hand and deck are just lists of ids, while player_cards is a list of card objects
         self.player_deck = Deck(player_deck_list)
         self.player_hand = []
         self.opp_hand_size = STARTING_HAND_SIZE
         #TODO: Figure this out
         #NOTE: The input for these 2 might need to be changed once it's been decided how cards that add cards to hand work
-        self.player_cards = generate_cards(player_deck_list)
-        self.opp_cards = generate_cards(opp_deck_list)
+        self.player_cards = game.json_handler.generate_cards(player_deck_list)
+        self.opp_cards = game.json_handler.generate_cards(opp_deck_list)
         #By reversing the territories of the opponent's cards here, we can really easily just give the board an already modified card object so no special player/opponent logic is needed for territory locations
         self._reverse_territories(self.opp_cards)
 
@@ -27,7 +27,8 @@ class GameManager:
     #TODO: figure out how to implement mulligan
     def draw_opening(self):
         for i in range(STARTING_HAND_SIZE):
-            self.player_hand.append(self.player_deck.draw())
+            if self.player_deck.cards_left() > 0:
+                self.player_hand.append(self.player_deck.draw())
 
     def draw(self):
         #Draw from deck and add the card to hand, if there are cards left.  Otherwise, drawing needs to be skipped
