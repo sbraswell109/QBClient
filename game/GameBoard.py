@@ -55,18 +55,21 @@ class GameBoard():
                             target.pawn_value += 1
                         elif turnplayer == TurnPlayer.OPPONENT: #Spot empty or controlled by opponent
                             target.pawn_value -= 1
-        #BIG TODO: Finalize card effect function signatures before writing any code actually calling the cards
-        #TODO: Card's effect should occur before territory is captured since if the effect destroys a card and takes the space, the space will be taken which requires the effec to occur first
-        #Apply the card's effect (How do Instant and Continuous effects differ in how they are applied? When a continuous card leaves the field, it's effect needs to be unapplied)
-        #   Idea: Instanteous effects modify the card object, continuous effects modify the affected nodes' point_modifiers,
-        #       and when a card is removed, remove it from applicable nodes' point_modifiers
-        #TODO: Worry about trigger effects and where those are applied (maybe update_board?).  Will probably need to check the board after each action has taken place in the game loop
+
 
     #TODO: Write function
     #A function that checks the board for the proper board state, making sure cards that need to be destroyed are done so and trigger effects are applied if needed, etc
     # This also adds up continuous modifiers on a card for these checks
     #NOTE: When a card is destroyed, the pawn value of the square is equivalent to the pawn cost of the destroyed card (so I suppose pawn_val is capped at the card's cost when placed
     def update_board(self):
+        # Trigger effects need to be checked for activation and if they trigger.  This could change whether cards are marked for destruction or not so it should probably occur before we mark cards for destruction
+        #   If a trigger effect happens, it needs to not happen again if it should only happen once.  Probably add a new variable in the Effect class that the card effect can
+        #   Some effects trigger when a specific condition happens (like a card played, a card is destroyed).  When certain events happen, we can add a counter to the context dictionary and then wipe the counter after the effect resolves (EX: #32 Sea Devil & #35 Tonberry King
+        #       This involves creating a context dictionary as a member variable in the GM and the function that currently constructs one would just modify some of the parameters and return the modified dictionary
+        #   How do we handle trigger effects that are "When this card is destroyed?" (EX: #30 Flametrooper)
+        #       We can check for trigger effects when destroying the card
+        #   Signals would be a really nice way of doing trigger effects, but I'd have to check if python has those
+        # All effects are active simultaneously, so we need to go through the board and mark all cards at 0 value for destruction, then destroy them at the end and call update_board again
         pass
 
     #Given an origin position on the board and a list of territories to check, return the node coordinates (origin + territory) coordinates that are within the bounds of the board

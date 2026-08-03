@@ -63,40 +63,23 @@ def get_inbounds_positions_test():
     assert set(res2) == set((((3,0),(4,1))))
 
 
-#TODO: CREATE NODE.IS_ENEMY_OF() TESTS
+def node_is_enemy_of_tests():
+    board = GameBoard()
+    assert board[0][0].is_enemy_of(board[4][2]) # Player to enemy
+    assert not board[0][0].is_enemy_of(board[0][1]) # Player to player
+    assert board[4][1].is_enemy_of(board[0][2]) # Enemy to player
+    assert not board[4][2].is_enemy_of(board[4][1]) # Enemy to enemy
+    assert not board[0][1].is_enemy_of(board[2][2]) # Player to none
+    assert not board[3][0].is_enemy_of(board[4][0]) # None to enemy
+    assert not board[2][2].is_enemy_of(board[1][0]) # None to none
 
-#TODO: MOVE THESE TO A CARD EFFECT TESTING FILE
-#Test the grenadier
-def basic_instant_effect_test():
-    player_deck = ['003']
-    opp_deck = ['001']
-    gm = GameManager(player_deck, opp_deck)
-    gm.draw_opening()
-    #Need to manually place pawns on the board so that the Node correctly recognizes who controls it
-    gm.board[3][0].pawn_value = -1
-    gm.board[1][0].pawn_value = 1
-    gm.place_card((3,0), '001', TurnPlayer.OPPONENT)
-    gm.board[3][0].card.value = 6
-    gm.place_card((1,0), '003', TurnPlayer.SELF)
-    print(gm.board[3][0].card.value)
-    assert gm.board[3][0].card.value == 2
-
-#Test the crab
-def basic_continuous_effect_test():
-    pass
-
-#Test ???
-def basic_trigger_effect_test():
-    pass
 
 
 def run_board_tests():
     basic_pawn_value_incrementations_test()
     pawn_value_flip_test()
     get_inbounds_positions_test()
-    basic_instant_effect_test()
-    basic_continuous_effect_test()
-    basic_trigger_effect_test()
+    node_is_enemy_of_tests()
 
 if __name__ == "__main__":
     #Very basic adding cards to various spots on the board to test pawn_value incrementations

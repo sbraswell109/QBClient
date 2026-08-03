@@ -3,22 +3,25 @@ name = "QBClient"
 
 [tool.pyside6-project]
 files = [
+    "README.txt",
+    "__init__.py",
+    "form.ui",
     "game/Card.py",
     "game/Deck.py",
     "game/GameBoard.py",
     "game/GameManager.py",
+    "game/__init__.py",
     "game/card_effects.py",
     "game/cards.json",
     "game/game.py",
     "game/json_handler.py",
     "game/utilities.py",
-    "game/__init__.py",
-    "ui/game_ui.py",
-    "ui/home_screen.py",
-    "ui/__init__.py",
+    "main.py",
+    "testing/__init__.py",
+    "testing/card_effects_tests.py",
     "testing/gameboard_tests.py",
     "testing/gamemanager_tests.py",
-    "testing/__init__.py",
-    "form.ui",
-    "main.py",
-    "__init__.py"]
+    "ui/__init__.py",
+    "ui/game_ui.py",
+    "ui/home_screen.py",
+]
