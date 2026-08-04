@@ -48,7 +48,6 @@ class GameBoard():
                 target = self.board[target_x][target_y]
                 if target.card == None:
                     if (target.pawn_value < 3 and turnplayer == TurnPlayer.SELF) or (target.pawn_value > -3 and turnplayer == TurnPlayer.OPPONENT): #Check the pawn_value
-                        #TODO: Double check rules that if spot is controlled by opp, taking control only flips instead of flipping and adding
                         if (target.pawn_value < 0 and turnplayer == TurnPlayer.SELF) or (target.pawn_value > 0 and turnplayer == TurnPlayer.OPPONENT): #Spot needs to be flipped
                             target.pawn_value *= -1
                         elif turnplayer == TurnPlayer.SELF:     #Spot empty or controlled by self
@@ -63,13 +62,28 @@ class GameBoard():
     #NOTE: When a card is destroyed, the pawn value of the square is equivalent to the pawn cost of the destroyed card (so I suppose pawn_val is capped at the card's cost when placed
     def update_board(self):
         # Trigger effects need to be checked for activation and if they trigger.  This could change whether cards are marked for destruction or not so it should probably occur before we mark cards for destruction
-        #   If a trigger effect happens, it needs to not happen again if it should only happen once.  Probably add a new variable in the Effect class that the card effect can
-        #   Some effects trigger when a specific condition happens (like a card played, a card is destroyed).  When certain events happen, we can add a counter to the context dictionary and then wipe the counter after the effect resolves (EX: #32 Sea Devil & #35 Tonberry King
+        #   TODO: If a trigger effect happens, it needs to not happen again if it should only happen once.  Probably add a new variable in the Effect class that the card effect can check
+        #   Some effects trigger when a specific condition happens (like a card played, a card is destroyed).  When certain events happen, we can add information to the context dictionary and then wipe the counter later (probably the end of this function) (EX: #32 Sea Devil & #35 Tonberry King
         #       This involves creating a context dictionary as a member variable in the GM and the function that currently constructs one would just modify some of the parameters and return the modified dictionary
+        #       PROBLEM: Where do we wipe counter contexts for certain triggers?, but we'll need to keep track of new triggers to keep and old triggers to get rid of
+        #       PROBLEM: How do add certain contexts regarding inside card effect functions?  (EX: Should the grenadier effect add to some 'enfeebled' context somehow? If not, how do we keep track of it?)
+        #           How do we keep track of these effects between both instant and continuous effects?
+        #           I would really like to keep card effects as simple as possible, with all the update/results of the effects outside of it, so if we can 'figure out' what happened after a card effect, like an enfeeble or buff, it would be nice
         #   How do we handle trigger effects that are "When this card is destroyed?" (EX: #30 Flametrooper)
         #       We can check for trigger effects when destroying the card
-        #   Signals would be a really nice way of doing trigger effects, but I'd have to check if python has those
+        #   Signals would be a really nice way of doing trigger effects, but I'm not sure how possible they are
         # All effects are active simultaneously, so we need to go through the board and mark all cards at 0 value for destruction, then destroy them at the end and call update_board again
+        #   PROBLEM: Triggers can require the board to update, but updating the board can activate more triggers.  How should this cycle be formatted?
+        #       Triggers can cause more triggers to activate, but the board gets "cleaned" after each (set): update_board should be recursive
+        #       If a trigger occurs, both triggers need to be checked and board cleaned.
+        #       If a trigger doesn't occur, board needs to still be cleaned at least once, but stops after nothing changes
+        #       If board changes after being cleaned, even if no triggers it needs to be cleaned again
+        #       If board doesn't change after being cleaned, the triggers still need to be checked again
+        #       Regardless if the board changes when cleaned or not, triggers need to be checked again
+        #       IDEA: check triggers, then clean the board.  If either one changes the boardstate, we need to loop again
+        #           If we clean the board and nothing changes, we don't have to check the triggers again, so we can split this up into 2 distinct parts.  "check_triggers" and "clean_board".  They both need to happen once, but then we need to check if we need to recurse
+        #           check_triggers can have a parameter defaulting to false to recurse, which will be flipped to true if clean_board needs to be called. update_board calls check_triggers with parameter set to true to guarantee it calls clean_board
+        # gdscript-like signals would be really nice for doing this, but I don't think python has non-system related equivalents
         pass
 
     #Given an origin position on the board and a list of territories to check, return the node coordinates (origin + territory) coordinates that are within the bounds of the board
