@@ -31,7 +31,10 @@ class GameBoard():
     #pos is an x,y coordinate of where to place the given card in the board
     #If the opponent is placing a card, we can assume the territory and effect territory is already flipped, since we can do that when we generate their decklist of card objects
     def add_card(self, pos, card, turnplayer):
-        #TODO: The effect function needs to be given everything it needs to do its job
+        # Instant and Continuous effects just need to run their function once to apply their effect to the board since continuous effects are kept track of in a node
+        # TODO: But how does the effecet "raise power for each enhanced enemy card work? (Is it actually a trigger effect recalculating card value every turn?  Is it a 4th effect type being ran every update_board?)
+        #   Maybe 4 effect types are INSTANT, CONTINUOUS_STATIC, TRIGGER, CONTINUOUS_DYNAMIC??? (Dynamic effects can run each time update_board is called and instant/static just when card is added?)
+        # TODO: Add if statement to filter types of effects (want INSTANT and CONTINUOUS_STATIC to apply here.  TRIGGER and CONTINUOUS_DYNAMIC are handled in update_board)
         card.effect.function(self._generate_context(pos, card))
         self.update_board() #To trigger destruction of any cards necessary and to handle the results of any trigger/continuous effects
 
@@ -84,6 +87,9 @@ class GameBoard():
         #           If we clean the board and nothing changes, we don't have to check the triggers again, so we can split this up into 2 distinct parts.  "check_triggers" and "clean_board".  They both need to happen once, but then we need to check if we need to recurse
         #           check_triggers can have a parameter defaulting to false to recurse, which will be flipped to true if clean_board needs to be called. update_board calls check_triggers with parameter set to true to guarantee it calls clean_board
         # gdscript-like signals would be really nice for doing this, but I don't think python has non-system related equivalents
+
+        # Update current_value for all cards (base + modifiers)
+        # Check for cards with current_value of <=0
         pass
 
     #Given an origin position on the board and a list of territories to check, return the node coordinates (origin + territory) coordinates that are within the bounds of the board
@@ -133,6 +139,8 @@ class Node():
         #   Maybe this should be a set instead of a list?
         #TODO: Figure out exactly what point_modifiers consists of.  If a card modifying another card is destroyed, how do we stop keeping track of their modifier?  Pointers?
         #   Duh, cards have effect_territory which say which cards they are modifying.  I just need to figure out how to single out their own modifier in the list
+        #TODO: Should this be renamed?  It's more of continuous point modifiers rather than all point modifiers, as instant effects change the effect.
+        # Point Modifiers are in the form of ()
         self.point_modifiers = []
 
     # Given another node, returns if that node is controlled by a different player than the current node.  Returns False if either node's pawn_value is 0

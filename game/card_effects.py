@@ -25,7 +25,7 @@ def grenadier(context: dict):
     for spot in context["gm"].board.get_nodes_in_range(context["position"], context["card"].effect.territory):
         other_node = context["gm"].board[spot[0]][spot[1]]
         if other_node.card != None and self_node.is_enemy_of(other_node):
-            other_node.card.value -= 4
+            other_node.card.base_value -= 4
 
 #BIG TODO: Figure out how to add cards to the player's hand.  I have a feeling the effect signatures are going to change as a result
 #   The JSON file is probably going to need a "related_cards" field consisting of IDs of cards that are added to hand or whatever

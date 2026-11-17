@@ -15,9 +15,12 @@ def grenadier_effect_test():
     gm.board[3][0].pawn_value = -1
     gm.board[1][0].pawn_value = 1
     gm.place_card((3,0), '001', TurnPlayer.OPPONENT)
-    gm.board[3][0].card.value = 6
+    gm.board[3][0].card.base_value = 6
     gm.place_card((1,0), '003', TurnPlayer.SELF)
-    assert gm.board[3][0].card.value == 2
+    assert gm.board[3][0].card.base_value == 2
+
+def grenadier_effect_out_of_bounds_test():
+    pass
 
 #Test the crab
 def basic_continuous_effect_test():
@@ -31,6 +34,7 @@ def basic_trigger_effect_test():
 
 def run_effects_tests():
     grenadier_effect_test()
+    grenadier_effect_out_of_bounds_test()
     basic_continuous_effect_test()
     basic_trigger_effect_test()
 

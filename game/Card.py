@@ -10,9 +10,10 @@ class Card():
     def __init__(self, id, name, cost, value, territory, effect=None):
         self.id = id
         self.name = name
-        #Replacement cards will probably have a cost of 4, and the code checking for validity of player input will need to have special rules with 4 cost cards
+        #Replacement cards will probably have a cost of 4?, and the code checking for validity of player input will need to have special rules with 4 cost cards?
         self.cost = cost    #Pawn cost
-        self.value = value  #Value of card
+        self.base_value = value  #Starting base value of the card.  Modified for one-time effects
+        self.final_value = value #Current value of card when on board.  Recalculated using the base value all the time
         self.territory = territory  #Set of x,y coordinates relative to the card's position of the territory the card captures (card is located at 0,0)
         #TODO: Work out the effect function parameters.  Needs at least effect territory, and since it's tied to the card it probably also needs the board and card position?
         #   Card effects are going to need to be labeled as instanteous, continuous, and trigger to determine when they trigger
@@ -27,7 +28,7 @@ class Card():
             return False
         territory_set = set([tuple(x) for x in self.territory])
         other_terr_set = set([tuple(x) for x in other_card.territory])
-        return self.id == other_card.id and self.name == other_card.name and self.cost == other_card.cost and self.value == other_card.value and territory_set == other_terr_set and self.effect == other_card.effect
+        return self.id == other_card.id and self.name == other_card.name and self.cost == other_card.cost and self.base_value == other_card.base_value and self.final_value == other_card.final_value and territory_set == other_terr_set and self.effect == other_card.effect
 
 
 class Effect():
