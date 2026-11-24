@@ -34,7 +34,7 @@ class Card():
 class Effect():
     def __init__(self, function, type, territory):
         self.function = function    #Actual function that gets called
-        self.type = type    #Type of effect, (Instant, Continuous, Trigger)
+        self.type = type    #Type of effect, (Instant, Continuous_Static, Continuous_Dynamic, Trigger)
         self.territory = territory  #The territory the effect acts on
 
     def __str__(self):

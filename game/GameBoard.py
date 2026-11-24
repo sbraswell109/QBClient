@@ -3,7 +3,7 @@
 #This file contains the board class used to represent and modify the game board
 
 from game.Card import Card
-from game.utilities import TurnPlayer
+from game.utilities import TurnPlayer, EffectType
 
 #TODO: think about this
 #   This class was intended to be the board, but the functions are so closely tied to the board as well as the steps of the general game loop since everything happens when a card is place
@@ -35,7 +35,8 @@ class GameBoard():
         # TODO: But how does the effecet "raise power for each enhanced enemy card work? (Is it actually a trigger effect recalculating card value every turn?  Is it a 4th effect type being ran every update_board?)
         #   Maybe 4 effect types are INSTANT, CONTINUOUS_STATIC, TRIGGER, CONTINUOUS_DYNAMIC??? (Dynamic effects can run each time update_board is called and instant/static just when card is added?)
         # TODO: Add if statement to filter types of effects (want INSTANT and CONTINUOUS_STATIC to apply here.  TRIGGER and CONTINUOUS_DYNAMIC are handled in update_board)
-        card.effect.function(self._generate_context(pos, card))
+        if card.effect.type == EffectType.INSTANT or card.effect.type == EffectType.CONTINUOUS_STATIC:
+            card.effect.function(self._generate_context(pos, card))
         self.update_board() #To trigger destruction of any cards necessary and to handle the results of any trigger/continuous effects
 
         #Put card in the correct node
@@ -141,6 +142,12 @@ class Node():
         #   Duh, cards have effect_territory which say which cards they are modifying.  I just need to figure out how to single out their own modifier in the list
         #TODO: Should this be renamed?  It's more of continuous point modifiers rather than all point modifiers, as instant effects change the effect.
         # Point Modifiers are in the form of ()
+        # NOTE: A point_modifier needs some form of distinguishing which player it affects.  Some cards only affect allies, some enemies, some everything
+        #Maybe this should be a set rather than a list because they all apply simultaneously?  Maybe it needs to be a list for remove operations???
+        #   Each modifier needs to contain:
+        #       The +/- value
+        #       The origin of the effect being applied (I wish I had pointers
+        #       The turnplayer who controls the card?  Maybe Node.is_enemy_of() can be used instead of a variable for calculating enemy/ally relations?
         self.point_modifiers = []
 
     # Given another node, returns if that node is controlled by a different player than the current node.  Returns False if either node's pawn_value is 0

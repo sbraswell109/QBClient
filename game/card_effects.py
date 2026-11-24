@@ -42,7 +42,7 @@ card_effects = {
     0:{"type": EffectType.INSTANT, "function": no_effect}, #No effect
     3:{"type": EffectType.INSTANT, "function": grenadier},  #Grenadier
     10:{"type": EffectType.INSTANT, "function": mandragora}, #Mandragora
-    13:{"type": EffectType.CONTINUOUS, "function": crystalline_crab},   #Crystalline Crab
+    13:{"type": EffectType.CONTINUOUS_STATIC, "function": crystalline_crab},   #Crystalline Crab
     }
 
 

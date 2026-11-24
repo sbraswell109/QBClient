@@ -11,8 +11,9 @@ class TurnPlayer(Enum):
 #EffectType is used by the board to determine when the effect triggers.
 class EffectType(Enum):
     INSTANT = 1
-    CONTINUOUS = 2
-    TRIGGER = 3
+    CONTINUOUS_STATIC = 2
+    CONTINUOUS_DYNAMIC = 3
+    TRIGGER = 4
 
 # if __name__ == "__main__":
 #     pass

@@ -23,8 +23,25 @@ def grenadier_effect_out_of_bounds_test():
     pass
 
 #Test the crab
-def basic_continuous_effect_test():
-    pass
+def crystalline_crab_effect_test():
+    player_deck = ['001', '013', '013']
+    opp_deck = ['001']
+    gm = GameManager(player_deck, opp_deck)
+    gm.draw_opening()
+    gm.place_card((0, 2), '013', TurnPlayer.SELF)
+    gm.place_card((0, 1), '001', TurnPlayer.SELF)
+    #Testing that the crab boosts the value of allied cards
+    #TODO: Replace this with what this should be
+    assert gm.board[0][1].point_modifiers == None
+    assert gm.board[0][1].card.final_value == 2
+
+    #Testing that the crab does not boost the value of enemy cards
+    gm.board[4][2].pawn_value = 1
+    gm.place_card((4,2), '013', TurnPlayer.SELF)
+    gm.place_card((4,1), '001', TurnPlayer.OPPONENT)
+    #TODO: Replace this with whatever format point_modifiers should be in
+    assert gm.board[4][1].point_modifiers == None
+    assert gm.board[4][1].card.final_value == 1
 
 #Test ???
 def basic_trigger_effect_test():
@@ -35,7 +52,7 @@ def basic_trigger_effect_test():
 def run_effects_tests():
     grenadier_effect_test()
     grenadier_effect_out_of_bounds_test()
-    basic_continuous_effect_test()
+    crystalline_crab_effect_test
     basic_trigger_effect_test()
 
 if __name__ == "__main__":
